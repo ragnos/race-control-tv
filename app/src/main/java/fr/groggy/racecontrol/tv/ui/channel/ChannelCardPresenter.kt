@@ -34,7 +34,7 @@ class ChannelCardPresenter: Presenter() {
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val view = viewHolder.view as ImageCardView
         when(item) {
             is BasicChannelCard -> {
@@ -62,7 +62,7 @@ class ChannelCardPresenter: Presenter() {
                     Glide.with(viewHolder.view.context)
                         .load(it.url)
                         .centerCrop()
-                        .into(view.mainImageView)
+                        .into(view.mainImageView!!)
                 }
             }
         }

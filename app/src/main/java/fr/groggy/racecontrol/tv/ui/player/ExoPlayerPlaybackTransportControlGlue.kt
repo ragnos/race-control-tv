@@ -48,7 +48,7 @@ class ExoPlayerPlaybackTransportControlGlue(
         Action.NO_ID,
         activity.getString(R.string.audio_selection_dialog_title),
         null,
-        ContextCompat.getDrawable(context, R.drawable.lb_ic_search_mic_out)
+        ContextCompat.getDrawable(context, androidx.leanback.R.drawable.lb_ic_search_mic_out)
     )
     private val switchChannelAction = Action(
         Action.NO_ID,
@@ -161,14 +161,6 @@ class ExoPlayerPlaybackTransportControlGlue(
         }
     }
 
-    override fun onTracksChanged(eventTime: EventTime, trackGroups: TrackGroupArray, trackSelections: TrackSelectionArray) {
-        Log.d(TAG, "onTracksChanged")
-        val audio = trackSelections[1]
-        if (audio != null) {
-            currentAudioFormat = audio.getFormat(C.TRACK_TYPE_DEFAULT)
-            updateSubtitle()
-        }
-    }
 
     override fun onDownstreamFormatChanged(eventTime: EventTime, mediaLoadData: MediaLoadData) {
         Log.d(TAG, "onDownstreamFormatChanged")

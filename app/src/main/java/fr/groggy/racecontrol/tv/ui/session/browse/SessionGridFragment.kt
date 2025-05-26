@@ -60,15 +60,15 @@ class SessionGridFragment : VerticalGridSupportFragment(), OnItemViewClickedList
     }
 
     private fun setupUIElements() {
-        gridPresenter = VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_NONE).apply {
+        setGridPresenter(VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_NONE).apply {
             numberOfColumns = COLUMNS
             shadowEnabled = false
-        }
-        adapter = channelsAdapter
+        })
+        setAdapter(channelsAdapter)
     }
 
     private fun setupEventListeners() {
-        onItemViewClickedListener = this
+        setOnItemViewClickedListener(this)
     }
 
     private fun onUpdatedSession(session: Session) {
@@ -78,7 +78,6 @@ class SessionGridFragment : VerticalGridSupportFragment(), OnItemViewClickedList
                 activity?.finish()
             }
             is MultiChannelsSession -> {
-                title = session.name
                 channelsAdapter.setItems(session.channels, Channel.diffCallback)
 
                 if (settingsRepository.getCurrent().bypassChannelSelection) {

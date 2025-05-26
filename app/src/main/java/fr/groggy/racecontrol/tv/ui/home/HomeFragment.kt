@@ -47,7 +47,7 @@ class HomeFragment : RowsSupportFragment(), OnItemViewClickedListener {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             val dimensionPixelSize =
-                inflater.context.resources.getDimensionPixelSize(R.dimen.lb_browse_rows_fading_edge)
+                inflater.context.resources.getDimensionPixelSize(androidx.leanback.R.dimen.lb_browse_rows_fading_edge)
             val horizontalMargin = -dimensionPixelSize * 2 - 4
 
             leftMargin = horizontalMargin
@@ -79,8 +79,8 @@ class HomeFragment : RowsSupportFragment(), OnItemViewClickedListener {
             val sessionsListRow = getLastSessionsRow(event.sessions, headerName, existingListRow)
 
             if (existingListRow == null) {
-                homeEntriesAdapter.add(sessionsListRow)
-                homeEntriesAdapter.add(archivesRow)
+                homeEntriesAdapter.add(sessionsListRow as Any)
+                homeEntriesAdapter.add(archivesRow as Any)
             } else {
                 /* Makes the adapter blink :| */
                 homeEntriesAdapter.replace(0, sessionsListRow)
@@ -92,7 +92,7 @@ class HomeFragment : RowsSupportFragment(), OnItemViewClickedListener {
 
     private fun onEmptySeason() {
         /* Session wasn't started yet, just add the archive */
-        homeEntriesAdapter.add(archivesRow)
+        homeEntriesAdapter.add(archivesRow as Any)
     }
 
     private fun getLastSessionsRow(
@@ -155,6 +155,6 @@ class HomeFragment : RowsSupportFragment(), OnItemViewClickedListener {
             }
             else -> null
         }
-        startActivity(activity)
+        activity?.let { startActivity(it) }
     }
 }

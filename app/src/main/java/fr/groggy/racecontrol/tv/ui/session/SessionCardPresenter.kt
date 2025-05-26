@@ -25,12 +25,13 @@ class SessionCardPresenter @Inject constructor(
         )
         imageCardView.cardType = CARD_TYPE_FLAG_TITLE or CARD_TYPE_FLAG_CONTENT
 
-        imageCardView.findViewById<TextView>(R.id.title_text)?.setLines(2)
+        // Remove this line as the resource doesn't exist in newer versions
+        // imageCardView.findViewById<TextView>(androidx.leanback.R.id.lb_image_card_view_title_text)?.setLines(2)
 
         return ViewHolder(imageCardView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val imageCardView = viewHolder.view as ImageCardView
         val session = item as SessionCard
 
@@ -40,7 +41,7 @@ class SessionCardPresenter @Inject constructor(
         if (settingsRepository.getCurrent().displayThumbnailsEnabled)
             Glide.with(viewHolder.view.context)
                 .load(session.thumbnail?.url)
-                .into(imageCardView.mainImageView)
+                .into(imageCardView.mainImageView!!)
         }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {

@@ -1,13 +1,13 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.2")
-        classpath(kotlin("gradle-plugin", version = "1.4.32"))
+        classpath("com.android.tools.build:gradle:8.4.0")
+        classpath(kotlin("gradle-plugin", version = "1.9.22"))
 
-        val hiltVersion = "2.38"
+        val hiltVersion = "2.51.1"
         project.extra["hiltVersion"] = hiltVersion
         classpath("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
     }
@@ -16,7 +16,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 

@@ -13,7 +13,14 @@ class EventListRowDiffCallback: DiffCallback<ListRow>() {
     override fun areContentsTheSame(oldItem: ListRow, newItem: ListRow): Boolean {
         val oldContent = (oldItem.adapter as ArrayObjectAdapter).unmodifiableList<SessionCard>()
         val newContent = (newItem.adapter as ArrayObjectAdapter).unmodifiableList<SessionCard>()
-        return oldContent == newContent
+        
+        if (oldContent.size != newContent.size) return false
+        
+        for (i in oldContent.indices) {
+            if (oldContent[i] != newContent[i]) return false
+        }
+        
+        return true
     }
 
 }

@@ -47,15 +47,15 @@ class ChannelSelectionInnerFragment: VerticalGridSupportFragment(), OnItemViewCl
     }
 
     private fun setupUIElements() {
-        gridPresenter = VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_NONE).apply {
+        setGridPresenter(VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_NONE).apply {
             numberOfColumns = 1
             shadowEnabled = false
-        }
-        adapter = channelsAdapter
+        })
+        setAdapter(channelsAdapter)
     }
 
     private fun setupEventListeners() {
-        onItemViewClickedListener = this
+        setOnItemViewClickedListener(this)
     }
 
     override fun onItemClicked(
@@ -68,10 +68,14 @@ class ChannelSelectionInnerFragment: VerticalGridSupportFragment(), OnItemViewCl
         onChannelSelected?.invoke(channel)
     }
 
+    fun setChannelSelectionListener(listener: (Channel) -> Unit) {
+        onChannelSelected = listener
+    }
+
     companion object {
         fun newInstance(channelSelectionListener: (Channel) -> Unit): ChannelSelectionInnerFragment {
             return ChannelSelectionInnerFragment().apply {
-                onChannelSelected = channelSelectionListener
+                setChannelSelectionListener(channelSelectionListener)
             }
         }
     }
