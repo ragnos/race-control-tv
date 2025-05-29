@@ -5,7 +5,10 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class F1TvViewingResponse(
-    val resultObj: F1TvViewingResponseResultObject
+    val resultCode: String,
+    val message: String?,
+    val errorDescription: String?,
+    val resultObj: F1TvViewingResponseResultObject?
 )
 
 @JsonClass(generateAdapter = true)

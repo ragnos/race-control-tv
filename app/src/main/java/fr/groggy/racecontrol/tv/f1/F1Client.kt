@@ -43,6 +43,12 @@ class F1Client @Inject constructor(
             .header("ascendontoken", token.toString())
             .build()
         val response = request.execute(httpClient).parseJsonBody(viewingResponseJsonAdapter)
+        
+        // Check if content is available (resultObj is not null and contains required fields)
+        if (response.resultObj == null) {
+            throw ContentNotAvailableException(response.message ?: "Content not available", response.errorDescription)
+        }
+        
         return F1TvViewing(
             url = Uri.parse(response.resultObj.url),
             contentId = contentId,
@@ -51,4 +57,9 @@ class F1Client @Inject constructor(
             entitlementtoken = response.resultObj.entitlementToken
         )
     }
+
+    class ContentNotAvailableException(
+        message: String,
+        val errorCode: String?
+    ) : IllegalStateException(message)
 }

@@ -14,6 +14,7 @@ import fr.groggy.racecontrol.tv.R
 import fr.groggy.racecontrol.tv.core.ViewingService
 import fr.groggy.racecontrol.tv.core.settings.Settings
 import fr.groggy.racecontrol.tv.core.settings.SettingsRepository
+import fr.groggy.racecontrol.tv.f1.F1Client
 import fr.groggy.racecontrol.tv.f1tv.F1TvViewing
 import fr.groggy.racecontrol.tv.ui.player.ChannelSelectionDialog
 import fr.groggy.racecontrol.tv.ui.session.browse.Channel
@@ -80,6 +81,8 @@ class ChannelPlaybackActivity : FragmentActivity(R.layout.activity_channel_playb
                     startActivity(SignInActivity.intentClearTask(this))
                     finish()
                 }
+            } catch (e: F1Client.ContentNotAvailableException) {
+                handleError(R.string.unable_to_play_video_region_restricted, ::finish)
             } catch (_: Exception) {
                 handleError(R.string.unable_to_play_video_message, ::finish)
             }
@@ -125,6 +128,7 @@ class ChannelPlaybackActivity : FragmentActivity(R.layout.activity_channel_playb
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 cancelAction.invoke()
             }
+            .show()
     }
 
     fun playerError() {
