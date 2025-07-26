@@ -1,34 +1,47 @@
-name: Build Android APK
+name: Generate APK
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Set up JDK (fixed)
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          java-version: '17'  # Your desired Java version
+          distribution: 'adopt'  # Using AdoptOpenJDK (replace if needed)
+      
+      - name: Decode Keystore
+              run: |
+                echo "${{ secrets.BASE64_KEYSTORE }}" | base64 --decode > keystore.jks
+            
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "storeFile=${{ secrets.STORE_FILE }}" >> local.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> local.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> local.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> local.properties
 
-      - name: Setup Gradle cache
-        uses: gradle/gradle-build-action@v3
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug
+      - name: Build APK for Staging
+        run: ./gradlew assembleBetaStaging  # Adjust as per your build configuration
+      
+      - name: Debug - Find APK files
+        run: find app -name "*.apk" -type f
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: Karui-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: Gameskii-staging-apk
+          path: app/build/outputs/apk/**/*.apk  # Adjust path and filename
